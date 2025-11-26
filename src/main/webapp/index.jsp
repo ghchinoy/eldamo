@@ -6,8 +6,6 @@
     <title>Eldamo : Home</title>
     <link rel="stylesheet" type="text/css" href="css/global.css">
     <script src="js/add-queries.js"></script>
-    <script src="js/dark-mode.js" defer></script>
-
 </head>
 <body>
 <h1>Eldamo - An&nbsp;Elvish&nbsp;Lexicon</h1>
@@ -113,3 +111,5 @@ accordance with its
 <% } %>
 </body>
 </html>
+<script src="js/dark-mode.js"></script>
+<script>createDarkModeButton();</script>

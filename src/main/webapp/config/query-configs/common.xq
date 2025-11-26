@@ -231,7 +231,7 @@ declare function c:short-ref($source) as xs:string {
 declare function c:print-source-link($ref as element(), $short-mode as xs:boolean) as element() {
     let $link := concat('../references/ref-', substring-before($ref/@source, '/'), '.html#', $ref/@source)
     let $src := c:print-full-source($ref)
-    return <a href="{$link}" style="color: black">{
+    return <a href="{$link}" class="source-link">{
         if ($short-mode) then c:print-source($ref) else c:print-full-source($ref)
     }</a>
 };
