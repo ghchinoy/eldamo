@@ -14,12 +14,14 @@ function createDarkModeButton() {
     let btn = document.getElementById('darkModeBtn');
     if (!btn) {
         btn = document.createElement('button');
-        btn = document.createElement('button');
         btn.id = 'darkModeBtn';
         btn.title = 'Dark Mode Toggle\n(button available\nonly on home page)';
-        btn.style.position = 'absolute';
-        btn.style.top = '0.9rem';
-        btn.style.right = '1rem';
+
+        btn.style.float = 'right';
+        btn.style.marginRight = '1rem';
+        btn.style.marginLeft = '10px';
+
+
         btn.style.zIndex = '9999';
         btn.style.background = 'none';
         btn.style.border = 'none';
@@ -31,11 +33,11 @@ function createDarkModeButton() {
         btn.style.justifyContent = 'center';
         btn.style.width = '32px';
         btn.style.height = '32px';
-        document.body.appendChild(btn);
+
+        document.body.prepend(btn);
     }
 
     updateToggleButton(document.body.classList.contains('dark-mode'));
-
     btn.addEventListener('click', toggleDarkMode);
 }
 
