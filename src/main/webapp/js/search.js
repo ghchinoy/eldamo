@@ -300,7 +300,9 @@ function searchIt(buffer) {
     		if (langs.length === 0 || langs.includes(word.lang)) {
     			var set = last;
     			var compare = toMatch(searchText);
-                if (word.match.indexOf(compare) == 0 && target != 'gloss-only') set = first;
+                if (word.match.indexOf(compare) == 0 && target != 'gloss-only' && position != 'end' && position != 'interior') {
+                    set = first;
+                }
                 //if (word.match.indexOf(' ' + compare) > 0) set = second;
                 //if (word.matchgloss.indexOf(compare) == 0) set = third;
                 //if (word.matchgloss.indexOf(' ' + compare) > 0) set = third;
