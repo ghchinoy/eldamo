@@ -231,6 +231,7 @@ function initSearch() {
         var o = new Option(array[1], array[0]);
         // langSelect.options.add(o);
     }
+    localizeUI();
     doSearch();
 }
 
@@ -645,3 +646,184 @@ function checkLoading() {
 }
 
 window.onscroll = checkLoading;
+
+//------------------------//
+// Localize lookup fields //
+//------------------------//
+
+function localizeUI() {
+    if (!isTrans) return;
+
+    var url = window.location.toString();
+    var transPos = url.indexOf('trans=');
+    if (transPos < 0) return;
+
+    var lang = url.substring(transPos + 6);
+
+    if (lang.indexOf('&') > 0) {
+        lang = lang.substring(0, lang.indexOf('&'));
+    }
+
+    var map = uiTranslations[lang];
+    if (!map) return;
+    translateSelectOptions('langSelect', map);
+    translateSelectOptions('targetSelect', map);
+    translateSelectOptions('positionSelect', map);
+    translateSelectOptions('partsOfSpeechSelect', map);
+
+    var helpText = helpTranslations[lang];
+    var helpDiv = document.getElementById('help-div');
+    if (helpText && helpDiv) {
+        helpDiv.innerHTML = helpText;
+    }
+
+    var searchBox = document.getElementById('searchBox');
+    if (searchBox && map['search...']) {
+        searchBox.placeholder = map['search...'];
+    }
+    var resetButton = document.getElementById('resetButton');
+    if (resetButton) {
+        if (lang === 'polish') resetButton.innerText = 'Resetuj';
+        if (lang === 'russian') resetButton.innerText = 'Сброс';
+    }
+}
+
+function translateSelectOptions(elementId, map) {
+    var select = document.getElementById(elementId);
+    if (!select) return;
+
+    for (var i = 0; i < select.options.length; i++) {
+        var opt = select.options[i];
+
+        if (map[opt.text]) {
+            opt.text = map[opt.text];
+        }
+    }
+}
+
+
+var uiTranslations = {
+    'polish': {
+        'search...': 'Szukaj...',
+        // --- Language Select ---
+        'All Languages': 'Wszystkie języki',
+        'All Quenya': 'Wszystkie odmiany quenyi',
+        'Sindarin/Noldorin/Gnomish': 'Sindarin/Noldorin/Gnomijski',
+        'All Primitive Elvish': 'Prymitywny elficki',
+        'Later Quenya (1930+)': 'Późna Quenya (1930+)',
+        'Sindarin/Noldorin (1930+)': 'Sindarin/Noldorin (1930+)',
+        'Later Primitive (1930+)': 'Późny prymitywny elficki (1930+)',
+        'All Late Elvish (1950-73)': 'Późne języki elfickie (1950-73)',
+        'All Middle Elvish (1930-50)': 'Średnie języki elfickie (1930-50)',
+        'All Early Elvish (1910-30)': 'Wczesne języki elfickie (1910-30)',
+        'Middle Quenya (1930-50)': 'Środkowa Quenya (1930-50)',
+        'Early Quenya (1910-30)': 'Wczesna Quenya (1910-30)',
+        'Late Quenya (1950-73)': 'Późna Quenya (1950-73)',
+        'Quenya (1950-73)': 'Quenya (1950-73)',
+        'Sindarin (1950-73)': 'Sindarin (1950-73)',
+        'Primitive Elvish (1950-73)': 'Prymitywny elficki (1950-73)',
+        'Quenya (1930-50)': 'Quenya (1930-50)',
+        'Noldorin (1930-50)': 'Noldorin (1930-50)',
+        'Middle Primitive (1930-50)': 'Średnioprymitywny (1930-50)',
+        'Quenya (1910-30)': 'Quenya (1910-30)',
+        'Gnomish (1910-20)': 'Gnomijski (1910-20)',
+        'Early Noldorin (1920-30)': 'Wczesny Noldorin (1920-30)',
+        'Early Primitive (1910-30)': 'Wczesnoprymitywny (1910-30)',
+        // Target Select
+        'word & gloss': 'słowo i znaczenie',
+        'word only': 'tylko słowo',
+        'gloss only': 'tylko znaczenie',
+
+        // Position Select
+        'any match': 'wszystko',
+        'start only': 'tylko początek',
+        'end only': 'tylko koniec',
+        'interior only': 'tylko środek',
+
+        // Parts of Speech Select
+        'parts of speech': 'części mowy',
+        'exclude names': 'bez nazw',
+        'only names': 'tylko nazwy',
+        'noun': 'rzeczownik',
+        'verb': 'czasownik',
+        'adjective': 'przymiotnik',
+        'adverb': 'przysłówek',
+        'pronoun': 'zaimek',
+        'preposition': 'przyimek',
+        'conjunction': 'spójnik',
+        'interjection': 'wykrzyknik',
+        'prefix': 'przedrostek',
+        'suffix': 'przyrostek',
+        'root': 'rdzeń'
+    },
+    'russian': {
+        'search...': 'Поиск...',
+        // --- Language Select ---
+        'All Languages': 'все языки',
+        'All Quenya': 'квенья (все периоды)',
+        'Sindarin/Noldorin/Gnomish': 'синдарин/нолдорин/гномский',
+        'All Primitive Elvish': 'праэльфийский (все периоды)',
+        'Later Quenya (1930+)': 'поздняя квенья (1930+)',
+        'Sindarin/Noldorin (1930+)': 'синдарин/нолдорин (1930+)',
+        'Later Primitive (1930+)': 'поздний праэльфийский (1930+)',
+        'All Late Elvish (1950-73)': 'поздние эльфийские языки (1950-73)',
+        'All Middle Elvish (1930-50)': 'эльфийские языки среднего периода (1930-50)',
+        'All Early Elvish (1910-30)': 'ранние эльфийские языки (1910-30)',
+        'Late Quenya (1950-73)': 'поздняя квенья (1950-73)',
+        'Quenya (1950-73)': 'квенья (1950-73)',
+        'Sindarin (1950-73)': 'синдарин (1950-73)',
+        'Primitive Elvish (1950-73)': 'праэльфийский (1950-73)',
+        'Quenya (1930-50)': 'квенья (1930-50)',
+        'Noldorin (1930-50)': 'нолдорин (1930-50)',
+        'Middle Primitive (1930-50)': 'средне-праэльфийский (1930-50)',
+        'Quenya (1910-30)': 'квенья (1910-30)',
+        'Gnomish (1910-20)': 'гномский (1910-20)',
+        'Early Noldorin (1920-30)': 'ранний нолдорин (1920-30)',
+        'Early Primitive (1910-30)': 'ранний праэльфийский (1910-30)',
+        'Middle Quenya (1930-50)': 'средняя квенья (1930-50)',
+        'Early Quenya (1910-30)': 'ранняя квенья (1910-30)',
+        // Target Select
+        'word & gloss': 'слово и значение',
+        'word only': 'только слово',
+        'gloss only': 'только значение',
+
+        // Position Select
+        'any match': 'любое совпадение',
+        'start only': 'только начало',
+        'end only': 'только конец',
+        'interior only': 'только внутри',
+
+        // Parts of Speech Select
+        'parts of speech': 'части речи',
+        'exclude names': 'исключая имена',
+        'only names': 'только имена',
+        'noun': 'существительное',
+        'verb': 'глагол',
+        'adjective': 'прилагательное',
+        'adverb': 'наречие',
+        'pronoun': 'местоимение',
+        'preposition': 'предлог',
+        'conjunction': 'союз',
+        'interjection': 'междометие',
+        'prefix': 'префикс',
+        'suffix': 'суффикс',
+        'root': 'корень'
+    }
+};
+var helpTranslations = {
+    'polish':
+        '<p><b>Pomoc:</b> Ta sekcja pomocy znika po rozpoczęciu wyszukiwania. Możesz użyć przycisku „...”, aby pokazać/ukryć filtry, oraz przycisku „?”, aby przywołać tę pomoc.</p>' +
+        '<p>Aby wyszukać, wpisz słowo lub znaczenie w polu tekstowym. Domyślnie przeszukiwane są zarówno słowa elfickie, jak i ich angielskie znaczenia. Możesz to zmienić za pomocą filtrów (język, części mowy).</p>' +
+        '<p><i>Wieloznaczniki</i> (*): Gwiazdka zastępuje dowolny ciąg znaków. Wyszukanie „*re” znajdzie słowa kończące się na „re”; „re*” znajdzie te zaczynające się od „re”; „*re*” znajdzie „re” w środku.</p>' +
+        '<p><i>Wiele haseł</i> (,): Przecinek działa jak „LUB”. Wpisanie „dream, sleep” znajdzie słowa pasujące do „dream” LUB do „sleep”.</p>' +
+        '<p><i>Wymagane dopasowanie</i> (+): Plus działa jak „ORAZ”. Wpisanie „dream+sleep” znajdzie słowa, które pasują jednocześnie do „dream” ORAZ „sleep”.</p>' +
+        '<p><i>Tylko słowo / Tylko znaczenie:</i> Prefiks „word=” szuka tylko w słowach elfickich. Prefiks „gloss=” szuka tylko w tłumaczeniach. Np. „word=lor+gloss=dream” znajdzie słowa zawierające „lor”, których znaczenie to „dream”.</p>',
+
+    'russian':
+        '<p><b>Помощь:</b> Этот текст исчезает, когда вы начинаете поиск. Используйте кнопку «...», чтобы показать/скрыть фильтры, и кнопку «?», чтобы вернуть эту справку.</p>' +
+        '<p>Для поиска введите слово или значение. По умолчанию поиск идет и по эльфийским словам, и по их английским переводам. Вы можете ограничить поиск с помощью фильтров (язык, части речи).</p>' +
+        '<p><i>Подстановочные знаки</i> (*): Звездочка заменяет любые символы. Поиск «*re» найдет слова, оканчивающиеся на «re»; «re*» — начинающиеся с «re»; «*re*» — содержащие «re».</p>' +
+        '<p><i>Несколько значений</i> (,): Запятая работает как «ИЛИ». Поиск «dream, sleep» найдет слова, соответствующие «dream» ИЛИ «sleep».</p>' +
+        '<p><i>Обязательное совпадение</i> (+): Плюс работает как «И». Поиск «dream+sleep» найдет слова, соответствующие одновременно И «dream», И «sleep».</p>' +
+        '<p><i>Только слово / Только значение:</i> Префикс «word=» ищет только в эльфийских словах. «gloss=» — только в переводах. Например, «word=lor+gloss=dream» найдет слова, содержащие «lor», которые означают «dream».</p>'
+};
