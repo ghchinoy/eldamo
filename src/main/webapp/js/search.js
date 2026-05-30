@@ -472,9 +472,20 @@ function checkMatch(word, searchText, target, position, partsOfSpeech) {
 	} else if (position == 'interior') {
 		matcher = interiorMatch;
 	}
-	if (target.indexOf('word') >= 0 && (matcher(word.match, searchText) || matcher(word.normalized, searchText))) {
-		return true;
-	}
+    var normalizedSearch = normalizeSpelling(searchText);
+
+    if (target.indexOf('word') >= 0) {
+        // Exact match
+        if (matcher(word.match, searchText)) return true;
+
+        // existing logic
+        if (matcher(word.normalized, searchText)) return true;
+
+        // normalized search text match
+        if (normalizedSearch !== searchText && matcher(word.match, normalizedSearch)) {
+            return true;
+        }
+    }
 	if (target.indexOf('gloss') >= 0 && word.matchgloss.indexOf('unglossed') < 0 && matcher(word.matchgloss, searchText)) {
 		return true;
 	}
