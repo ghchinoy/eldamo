@@ -506,8 +506,9 @@ function wildcardMatch(text, searchText) {
 		if (pos[i] < 0) return false;
 		if (atStart && atEnd && !interiorMatch(text, parts[i])) return false;
 		if (i > 0) {
-			pos[i] = text.indexOf(parts[i], pos[i - 1]);
-			if (pos[i] < 0) return false;
+            var offset = (pos[i - 1] || 0) + parts[i - 1].length;
+            pos[i] = text.indexOf(parts[i], offset);
+            if (pos[i] < 0) return false;
 		}
 	}
 	return true;
